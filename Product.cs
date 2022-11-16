@@ -7,4 +7,9 @@
     public double Price { get; set; }
     public List<Order> Orders { get; set; }
 
+
+    public override string ToString()
+    {
+        return "Nome: " + Name + " Descrizione:  " + Description + " Prezzo: " + Price;
+    }
 }

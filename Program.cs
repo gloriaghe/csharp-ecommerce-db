@@ -48,7 +48,7 @@ List<Product> products = db.Products.ToList<Product>();
 while (!choiceOK)
 {
 
-    Console.Write("SEi un CLIENTE o un DIPENTENTE? ");
+    Console.Write("SEi un CLIENTE o un DIPENDENTE? ");
     string choice = Console.ReadLine();
 
     switch (choice)
@@ -109,12 +109,72 @@ while (!choiceOK)
             }
 
             break;
-        case "DIPENTENTE":
+        case "DIPENDENTE":
             choiceOK = true;
+            Console.WriteLine("1. Inserisci un nuovo cliente");
+            Console.WriteLine("2. Inserisci un nuovo ordine");
+            Console.WriteLine("3. Inserisci un nuovo prodotto");
+            Console.WriteLine("4. Trova un prodotto");
 
+
+            int choiceEmployee = Convert.ToInt32(Console.ReadLine());
+            if(choiceEmployee == 1)
+            {
+                Customer customerNew = newClient();
+                Console.Write(customerNew);
+            }
+            if(choiceEmployee == 2) 
+            {
+                Console.WriteLine("");
+            }
+            if(choiceEmployee == 3)
+            {
+                newProduct();
+                Console.Write("Prodotto inserito !");
+
+            }if(choiceEmployee == 4)
+            {
+                SearchProduct();
+            }
 
 
             break;
     }
 }
 db.SaveChanges();
+
+
+Customer newClient()
+{
+    Console.Write("Inserisci il nome : ");
+    string nameNewCustomer = Console.ReadLine();
+    Console.Write("Inserisci il cognome : ");
+    string surnameCUstomer = Console.ReadLine();
+    Console.Write("Inserisci la email: ");
+    string email = Console.ReadLine();
+    Customer customerNew = new Customer() { Name = nameNewCustomer, Surname = surnameCUstomer, Email = email };
+    db.Customers.Add(customerNew);
+    db.SaveChanges();
+    return customerNew;
+}
+
+void newProduct()
+{
+    Console.Write("Inserisci il nome prodotto: ");
+    string name = Console.ReadLine();
+    Console.Write("Inserisci la descrizione : ");
+    string description = Console.ReadLine();
+    Console.Write("Inserisci il prezzo: ");
+    double price = Convert.ToDouble(Console.ReadLine());
+    Product product = new Product() { Name = name, Description = description, Price = price };
+    db.Products.Add(product);
+    db.SaveChanges();
+}
+
+void SearchProduct()
+{
+    Console.Write("Inserisci il nome prodotto: ");
+    string name = Console.ReadLine();
+    Product product = db.Products.Where(product => product.Name == name).FirstOrDefault();
+    Console.WriteLine(product);
+}

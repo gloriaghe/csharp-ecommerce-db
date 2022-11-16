@@ -1,4 +1,6 @@
-﻿public class Order
+﻿using System.Diagnostics;
+
+public class Order
 {
     public int Id { get; set; }
     public DateTime Date { get; set; }
@@ -13,4 +15,8 @@
     public Customer Customer { get; set; }
     public int EmployeId { get; set; }
     public Employe Employe { get; set; }
+    public override string ToString()
+    {
+        return "Data: " + Date + " Totale:  " + Amount + " Cliente: " + Customer.ToString;
+    }
 }

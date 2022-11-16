@@ -36,6 +36,10 @@ Employe emplye2 = new Employe() { Name = "Giulio", Surname = "Neri" };
 
 //lista prodotti intera
 List<Product> products = db.Products.ToList<Product>();
+//List<Product> productsDonna = new List<Product>();
+//productsDonna.Add(shampoo);
+//productsDonna.Add(balsamo);
+//Console.WriteLine(productsDonna);
 
 
 
@@ -51,10 +55,26 @@ while (!choiceOK)
     {
         case "CLIENTE":
             choiceOK = true;
-            Console.Write("Scegli la Box di prodotti da acquistare:");
-            Console.Write("1 Box Donna");
-            Console.Write("2 Box Uomo");
-            Console.Write("3 Box Luxury");
+            Console.Write("Ciao, inserisci il tuo nome: ");
+            string name = Console.ReadLine();
+            Console.Write("Il tuo cognome: ");
+            string surname = Console.ReadLine();
+            Customer customerRicerca = db.Customers.Where(customer => customer.Name == name || customer.Surname == surname).FirstOrDefault();
+            if (customerRicerca != null)
+            {
+
+                Console.Write("Scegli la Box di prodotti da acquistare:");
+                Console.Write("1 Box Donna");
+                Console.Write("2 Box Uomo");
+                Console.Write("3 Box Luxury");
+                int choiceBox = Convert.ToInt32(Console.ReadLine());
+
+            }
+            else
+            {
+                Console.Write("Utente non iscritto al negozio");
+
+            }
 
             break;
         case "DIPENTENTE":

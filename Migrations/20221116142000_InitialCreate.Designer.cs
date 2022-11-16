@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace csharpecommercedb.Migrations
 {
     [DbContext(typeof(EcommerceDbContext))]
-    [Migration("20221116135203_InitialCreate")]
+    [Migration("20221116142000_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -78,6 +78,9 @@ namespace csharpecommercedb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
@@ -87,10 +90,7 @@ namespace csharpecommercedb.Migrations
                     b.Property<int>("EmployeId")
                         .HasColumnType("int");
 
-                    b.Property<double>("amount")
-                        .HasColumnType("float");
-
-                    b.Property<bool>("status")
+                    b.Property<bool>("Status")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
@@ -125,16 +125,16 @@ namespace csharpecommercedb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<double>("amount")
-                        .HasColumnType("float");
-
-                    b.Property<bool>("status")
+                    b.Property<bool>("Status")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
@@ -160,7 +160,7 @@ namespace csharpecommercedb.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("price")
+                    b.Property<double>("Price")
                         .HasColumnType("float");
 
                     b.HasKey("Id");

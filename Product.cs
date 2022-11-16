@@ -4,7 +4,7 @@
     public string Name { get; set; }
 
     public string Description { get; set; }
-    public double price { get; set; }
+    public double Price { get; set; }
     public List<Order> Orders { get; set; }
 
 }

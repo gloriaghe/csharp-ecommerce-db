@@ -11,12 +11,12 @@ public class Order
     public List<Product> Products { get; set; }
 
     public List<Payment> Payments { get; set; }
-    public int CustomerId { get; set; }
+    public int? CustomerId { get; set; }
     public Customer Customer { get; set; }
     public int EmployeId { get; set; }
     public Employe Employe { get; set; }
     public override string ToString()
     {
-        return "Data: " + Date + " Totale:  " + Amount + " Cliente: " + Customer.ToString;
+        return "Data: " + Date + " Totale:  " + Amount ;
     }
 }

@@ -151,7 +151,7 @@ while (!choiceOK)
 
                     if (boxChoice == "SI")
                     {
-                        box = new List<Product>();
+                        box = db.Products.ToList<Product>();
                         box.Add(product);
                         Console.WriteLine(box);
                     }
@@ -265,7 +265,7 @@ Product SearchProduct()
 Order newOrder(Employe employe, List<Product> products)
 {
     Console.Write("Inserisci il totale: ");
-    int amount = Convert.ToInt32(Console.ReadLine());
+    Double amount = Convert.ToDouble(Console.ReadLine());
 
     Order order = new Order() { Date = DateTime.Now, Amount = amount, Status = false, EmployeId = employe.Id, Employe = employe, Products = products };
     db.Orders.Add(order);

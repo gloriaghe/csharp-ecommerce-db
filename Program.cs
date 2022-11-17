@@ -112,6 +112,7 @@ while (!choiceOK)
             Console.WriteLine("3. Inserisci un nuovo prodotto");
             Console.WriteLine("4. Trova un prodotto");
             Console.WriteLine("5. Crea box prodotti");
+            Console.WriteLine("6. Modifica o cancella un prodotto");
 
 
             int choiceEmployee = Convert.ToInt32(Console.ReadLine());
@@ -174,8 +175,49 @@ while (!choiceOK)
                 newOrder(employeRicerca, box);
 
             }
+            if (choiceEmployee == 6)
+            {
+                bool modifyOK = false;
 
+                while (!modifyOK)
+                {
+                    Product product = SearchProduct();
+                    Console.WriteLine("1. Vuoi modificare il prodotto: ");
+                    Console.WriteLine("2. Vuoi cancellare il prodotto: ");
 
+                    int modifyChoice = Convert.ToInt32(Console.ReadLine());
+                    if (modifyChoice == 1)
+                    {
+                        Console.Write("Vuoi modificare il Prezzo (1), il nome (2) o la descrizione (3): ");
+                        modifyChoice = Convert.ToInt32(Console.ReadLine());
+                        ModifyProduct( product, modifyChoice);
+                        Console.WriteLine(product);
+                    }
+                    if (modifyChoice == 2)
+                    {
+                        Console.Write("Sei sicuro di volerlo cancellare? SI/NO ");
+                        string deleteChoice = Console.ReadLine();
+                        if(deleteChoice == "SI")
+                        {
+                            db.Remove(product);
+                            db.SaveChanges();
+                            Console.WriteLine("Prodotto cancellato! ");
+
+                        }
+                        else
+                        {
+                            Console.WriteLine("Prodotto non cancellato!");
+                        }
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("Scelta inesistente");
+
+                    }
+                }
+
+            }
             break;
     }
 }
@@ -232,6 +274,36 @@ Order newOrder(Employe employe, List<Product> products)
 
 }
 
+Product ModifyProduct(Product product, int campo)
+{
+
+
+
+    if (campo == 1)
+    {
+        Console.Write("Inserisci il nuovo prezzo: ");
+        double price = Convert.ToDouble(Console.ReadLine());
+        product.Price = price;
+
+    }
+    else if (campo == 2)
+    {
+        Console.Write("Inserisci il nuovo nome prodotto: ");
+        string name = Console.ReadLine();
+        product.Name = name;
+
+    }
+    else if (campo == 3)
+    {
+        Console.Write("Inserisci la nuova descrizione prodotto: ");
+        string description = Console.ReadLine();
+        product.Description = description;
+    }
+
+    db.SaveChanges();
+
+    return product;
+}
 void startApp()
 {
 

@@ -42,9 +42,7 @@ while (!choiceOK)
                 foreach (Order order in orders)
                 {
                     Console.Write(number + ". " + order);
-
                     Console.Write("____");
-
                     Console.Write("Quale Box vuoi acquistare? Scegli in numero: ");
 
                     choiceBox = Convert.ToInt32(Console.ReadLine());
@@ -53,44 +51,28 @@ while (!choiceOK)
                 bool OrderOK = false;
                 while (!OrderOK)
                 {
-
                     orders[choiceBox].Date = DateTime.Now;
                     orders[choiceBox].CustomerId = customerRicerca.Id;
                     Random random = new Random();
-                    //int rnd = random.Next(0, 1);
-                    int rnd = 1;
+                    int rnd = random.Next(1, 2);
+
                     if (rnd == 1)
                     {
                         Payment payment = new Payment() { Amount = orders[choiceBox].Amount, Date = DateTime.Now, Order = orders[choiceBox], OrderId = orders[choiceBox].Id, Status = true };
                         orders[choiceBox].Status = true;
                         db.Payments.Add(payment);
-
-
+                        db.SaveChanges();
+                        Console.WriteLine("Ordine effettuato!");
+                        OrderOK = true;
                     }
-                    else
+                    else if (rnd == 2)
                     {
                         orders[choiceBox].Status = false;
                         Payment payment = new Payment() { Amount = orders[choiceBox].Amount, Date = DateTime.Now, Order = orders[choiceBox], OrderId = orders[choiceBox].Id, Status = false };
                         db.Payments.Add(payment);
-
-                    }
-
-
-
-                    db.SaveChanges();
-
-                    if (rnd == 0)
-                    {
+                        db.SaveChanges();
                         Console.WriteLine("L'ordine non è andato a buon fine. Riprovo!");
-                        OrderOK = false;
-
                     }
-                    else
-                    {
-                        Console.WriteLine("Ordine effettuato!");
-                        OrderOK = true;
-                    }
-
                 }
             }
             else
@@ -190,14 +172,14 @@ while (!choiceOK)
                     {
                         Console.Write("Vuoi modificare il Prezzo (1), il nome (2) o la descrizione (3): ");
                         modifyChoice = Convert.ToInt32(Console.ReadLine());
-                        ModifyProduct( product, modifyChoice);
+                        ModifyProduct(product, modifyChoice);
                         Console.WriteLine(product);
                     }
                     if (modifyChoice == 2)
                     {
                         Console.Write("Sei sicuro di volerlo cancellare? SI/NO ");
                         string deleteChoice = Console.ReadLine();
-                        if(deleteChoice == "SI")
+                        if (deleteChoice == "SI")
                         {
                             db.Remove(product);
                             db.SaveChanges();

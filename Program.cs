@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -7,15 +8,8 @@ bool choiceOK = false;
 
 //startApp();
 
-
-List<Order> orders = db.Orders.Where(o => o.Status == false).ToList<Order>();
-
-if (orders.Count > 0)
-{
-    Console.WriteLine("Ci sono box disponibili");
-}
-
-
+//Passiamo agli ordini anche la lista prodotti
+List<Order> orders = db.Orders.Include(o => o.Products).Where(o => o.Status == false).ToList<Order>();
 
 while (!choiceOK)
 {
@@ -32,22 +26,42 @@ while (!choiceOK)
             Console.Write("Il tuo cognome: ");
             string surname = Console.ReadLine();
             Customer customerRicerca = db.Customers.Where(customer => customer.Name == name || customer.Surname == surname).FirstOrDefault();
-
+            if (orders.Count > 0)
+            {
+                Console.WriteLine("Ci sono box disponibili");
+            }
+            else
+            {
+                Console.WriteLine("Purtoppo non ci sono box disponibili.... Torna a trovarci presto");
+                return;
+            }
             if (customerRicerca != null)
             {
-                Console.Write("Scegli la Box di prodotti da acquistare: ");
+                Console.WriteLine("");
+                Console.WriteLine("Scegli la Box di prodotti da acquistare: ");
+                Console.WriteLine("");
+
                 int choiceBox = 0;
 
                 int number = 0;
                 foreach (Order order in orders)
                 {
-                    Console.Write(number + ". " + order);
-                    Console.Write("____");
-                    Console.Write("Quale Box vuoi acquistare? Scegli in numero: ");
+                    Console.WriteLine("");
 
-                    choiceBox = Convert.ToInt32(Console.ReadLine());
+                    Console.WriteLine(number + 1 + ". " + order);
                     number++;
+                    int numberCount = order.Products.Count();
+                    for (int i = 0; i < numberCount; i++)
+                    {
+                        //leggiamo i prodotti collegati all'ordine
+                        Console.Write(order.Products[i].Name + ", ");
+                    }
+                        Console.WriteLine("");
                 }
+                Console.WriteLine(" ");
+
+                Console.Write("Quale Box vuoi acquistare? Digita il numero della Box: ");
+                choiceBox = Convert.ToInt32(Console.ReadLine()) - 1;
                 bool OrderOK = false;
                 while (!OrderOK)
                 {
@@ -105,7 +119,7 @@ while (!choiceOK)
             }
             if (choiceEmployee == 2)
             {
-                Console.WriteLine("scelta prodotti:");
+                Console.WriteLine("scelta prodotti: ");
                 SearchProduct();
                 Console.WriteLine("");
             }
@@ -123,33 +137,26 @@ while (!choiceOK)
             if (choiceEmployee == 5)
             {
                 bool orderOk = false;
-                List<Product> box = null;
+                List<Product> box = new List<Product>();
                 while (!orderOk)
                 {
-
                     Product product = SearchProduct();
-                    Console.Write("Vuoi aggiungerlo alla box: SI/NO");
+                    Console.Write("Vuoi aggiungerlo alla box: SI/NO ");
                     string boxChoice = Console.ReadLine();
 
                     if (boxChoice == "SI")
                     {
-                        box = db.Products.ToList<Product>();
+                        //box = db.Products.ToList<Product>();
                         box.Add(product);
-                        Console.WriteLine(box);
                     }
                     else
-                    {
                         Console.Write("Non aggiunto");
 
-                    }
-                    Console.WriteLine("Vuoi aggiungere altri prodotti: SI/NO");
+                    Console.Write("Vuoi aggiungere altri prodotti: SI/NO ");
                     string orderChoice = Console.ReadLine();
 
-                    if (orderChoice == "SI")
-                        Console.WriteLine("OK");
-                    else
+                    if (orderChoice == "NO")
                     {
-
                         Console.WriteLine("Box finita");
                         orderOk = true;
                     }
@@ -184,21 +191,17 @@ while (!choiceOK)
                             db.Remove(product);
                             db.SaveChanges();
                             Console.WriteLine("Prodotto cancellato! ");
-
                         }
                         else
                         {
                             Console.WriteLine("Prodotto non cancellato!");
                         }
-
                     }
                     else
                     {
                         Console.WriteLine("Scelta inesistente");
-
                     }
                 }
-
             }
             break;
     }
@@ -247,8 +250,9 @@ Product SearchProduct()
 Order newOrder(Employe employe, List<Product> products)
 {
     Console.Write("Inserisci il totale: ");
-    Double amount = Convert.ToDouble(Console.ReadLine());
-
+    //Double amount = Convert.ToDouble(Console.ReadLine());
+    int amount = Convert.ToInt32(Console.ReadLine());
+    Console.Write(products.Count());
     Order order = new Order() { Date = DateTime.Now, Amount = amount, Status = false, EmployeId = employe.Id, Employe = employe, Products = products };
     db.Orders.Add(order);
     db.SaveChanges();
@@ -258,8 +262,6 @@ Order newOrder(Employe employe, List<Product> products)
 
 Product ModifyProduct(Product product, int campo)
 {
-
-
 
     if (campo == 1)
     {

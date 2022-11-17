@@ -17,6 +17,13 @@ public class Order
     public Employe Employe { get; set; }
     public override string ToString()
     {
-        return "Data: " + Date + " Totale:  " + Amount ;
+
+            string productString = "";
+       
+        string stringa = " Ordine: \n";
+        stringa += "Totale:\t" + this.Amount + "\n";
+        stringa += "Contiene:" + "\n";
+        return stringa;
+        
     }
 }

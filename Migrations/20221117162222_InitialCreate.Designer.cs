@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace csharpecommercedb.Migrations
 {
     [DbContext(typeof(EcommerceDbContext))]
-    [Migration("20221116163557_InitialCreate")]
+    [Migration("20221117162222_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
